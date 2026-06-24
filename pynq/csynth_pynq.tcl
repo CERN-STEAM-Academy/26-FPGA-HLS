@@ -1,7 +1,8 @@
 # Project
 open_project -reset "METProjAcceleratorHLS"
-add_files example_met.cpp
-add_files met_pynq.cpp
+# TODO: replace this with your own MET implementation!
+add_files ../MET/dummy_met.cpp -cflags "-I/home/sioni/Work/fpga_teaching/MET"
+add_files met_pynq.cpp -cflags "-I/home/sioni/Work/fpga_teaching/MET"
 set_top met_accelerator
 
 # Solution

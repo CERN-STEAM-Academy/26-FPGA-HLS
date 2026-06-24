@@ -1,4 +1,5 @@
-#include "example_met.h"
+// TODO include your own implementation here
+#include "dummy_met.h"
 
 // this defines the size of internal buffer that's used
 static constexpr int MAX_N_PARTICLES = 256;
@@ -19,8 +20,8 @@ void copy_inputs(int particles_start,                  // start index of event i
 /* Function to copy the MET of one event into the external memory,
 *  and cast it from the internal MET type to float
 */
-void copy_outputs(int n_event, T_MET met_int, float* met_out){
-  met_out[n_event] = met_int;
+void copy_outputs(int n_event, T_met met_int, float* met_out){
+  met_out[n_event] = met_int; // there is an implicit cast from T_met to float here
 }
 
 void met_accelerator(int n_events, unsigned short* n_particles, float* pt, float* phi, float* met){
@@ -37,6 +38,8 @@ void met_accelerator(int n_events, unsigned short* n_particles, float* pt, float
   #pragma HLS interface mode=s_axilite port=met bundle=control
   #pragma HLS interface mode=s_axilite port=return bundle=control
 
+  #pragma HLS dataflow
+
   // internal buffers for particles in one event
   T_pt pt_int[MAX_N_PARTICLES];
   T_phi phi_int[MAX_N_PARTICLES];
@@ -48,7 +51,7 @@ void met_accelerator(int n_events, unsigned short* n_particles, float* pt, float
     #pragma HLS pipeline
     unsigned short n_particles_event = n_particles[n_event];
     copy_inputs(n_particle, n_particles_event, pt, phi, pt_int, phi_int);
-    T_MET met_int = compute_met(n_particles_event, pt_int, phi_int);
+    T_met met_int = compute_met(n_particles_event, pt_int, phi_int);
     copy_outputs(n_event, met_int, met);
     n_particle += n_particles_event;
   }

@@ -1,6 +1,7 @@
 # Project
 open_project -reset "METProjFloat"
-add_files example_met.cpp
+# TODO replace with your implementation
+add_files dummy_met.cpp
 set_top compute_met
 
 # Solution
